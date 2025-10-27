@@ -91,17 +91,17 @@ const formatDate = (date: Date) => {
     )}
 
     <!-- Recent Content Feeds -->
-    <section class="space-y-16 sm:space-y-20">
+    <section>
 
       <!-- Recent Temporal Dispatches -->
       {recentDispatches.length > 0 && (
-        <div>
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8 border-b border-slate pb-3">
+        <div class="mb-20 sm:mb-24 lg:mb-28">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-10">
             Recent Temporal Dispatches
           </h2>
-          <div class="space-y-6">
+          <div>
             {recentDispatches.map((dispatch) => (
-              <article class="bg-void border border-slate p-6 hover:border-cyan-dim transition-colors">
+              <article class="bg-void border border-slate p-8 mb-8 hover:border-cyan-dim transition-colors">
                 <a href={`/dispatches/${dispatch.slug}`} class="group">
                   <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
                     {dispatch.data.title}
@@ -125,7 +125,7 @@ const formatDate = (date: Date) => {
               </article>
             ))}
           </div>
-          <div class="mt-6">
+          <div class="mt-8">
             <a
               href="/dispatches"
               class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
@@ -138,13 +138,13 @@ const formatDate = (date: Date) => {
 
       <!-- Recent Field Operations -->
       {recentOperations.length > 0 && (
-        <div>
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8 border-b border-slate pb-3">
+        <div class="mb-20 sm:mb-24 lg:mb-28">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-10">
             Recent Field Operations
           </h2>
-          <div class="space-y-6">
+          <div>
             {recentOperations.map((operation) => (
-              <article class="bg-void border border-slate p-6 hover:border-cyan-dim transition-colors">
+              <article class="bg-void border border-slate p-8 mb-8 hover:border-cyan-dim transition-colors">
                 <a href={`/operations/${operation.slug}`} class="group">
                   <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
                     {operation.data.title}
@@ -168,7 +168,7 @@ const formatDate = (date: Date) => {
               </article>
             ))}
           </div>
-          <div class="mt-6">
+          <div class="mt-8">
             <a
               href="/operations"
               class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
@@ -182,12 +182,12 @@ const formatDate = (date: Date) => {
       <!-- Recent Research -->
       {recentResearch.length > 0 && (
         <div>
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8 border-b border-slate pb-3">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-10">
             Recent Research
           </h2>
-          <div class="space-y-6">
+          <div>
             {recentResearch.map((piece) => (
-              <article class="bg-void border border-slate p-6 hover:border-cyan-dim transition-colors">
+              <article class="bg-void border border-slate p-8 mb-8 hover:border-cyan-dim transition-colors">
                 <a href={`/research/${piece.slug}`} class="group">
                   <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
                     {piece.data.title}
@@ -211,7 +211,7 @@ const formatDate = (date: Date) => {
               </article>
             ))}
           </div>
-          <div class="mt-6">
+          <div class="mt-8">
             <a
               href="/research"
               class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"

@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import "tailwindcss";
 
 @theme {
   /* Font Families */
@@ -27,12 +27,6 @@
   --color-purple-dim: #8b7ba8;
   --color-purple: #a991d4;
   --color-purple-bright: #c5b3e6;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
 
 body {
