@@ -12,7 +12,7 @@ const currentPath = Astro.url.pathname;
 
 <header class="border-b border-slate sticky top-0 bg-obsidian z-50">
   <nav class="container mx-auto px-4 py-4" aria-label="Main navigation">
-    <div class="flex items-center justify-between">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
       <!-- Logo/Wordmark -->
       <a
         href="/"
@@ -23,14 +23,14 @@ const currentPath = Astro.url.pathname;
       </a>
 
       <!-- Desktop Navigation -->
-      <ul class="hidden md:flex items-center space-x-6">
+      <ul class="hidden md:flex items-center space-x-10">
         {navItems.map(({ label, href }) => {
           const isActive = currentPath === href || (href !== '/' && currentPath.startsWith(href));
           return (
             <li>
               <a
                 href={href}
-                class={`text-sm hover:text-cyan transition-colors duration-200 ${
+                class={`hover:text-cyan transition-colors duration-200 ${
                   isActive ? 'text-cyan' : 'text-mist'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
