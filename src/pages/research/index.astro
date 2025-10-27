@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Query all research pieces
+const research = await getCollection('research');
+
+// Sort by date (most recent first)
+const sortedResearch = research
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Format date helper
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
+};
+---
+
+<BaseLayout
+  title="Research - OPOD"
+  description="Short fiction exploring alternate cultural histories that almost happened—forgotten trends, lost movements, and extinct aesthetics."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+
+    <!-- Page Header -->
+    <header class="mb-12 sm:mb-16">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+        Research
+      </h1>
+      <p class="text-base sm:text-lg text-mist max-w-3xl">
+        Short fiction exploring alternate cultural histories that almost happened—forgotten trends, lost movements, and extinct aesthetics.
+      </p>
+    </header>
+
+    <!-- Research List -->
+    <section>
+      {sortedResearch.length === 0 ? (
+        <div class="bg-void border border-slate p-8">
+          <p class="text-mist">No research available at this time.</p>
+        </div>
+      ) : (
+        <div class="space-y-6">
+          {sortedResearch.map((piece) => (
+            <article class="bg-void border border-slate p-6 sm:p-8 hover:border-cyan-dim transition-colors">
+              <a href={`/research/${piece.slug}`} class="group">
+                <h2 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
+                  {piece.data.title}
+                </h2>
+                <p class="text-sm text-cyan-dim mb-4 uppercase tracking-wider">
+                  {formatDate(piece.data.date)}
+                </p>
+                <p class="text-base text-mist leading-relaxed mb-4">
+                  {piece.data.description}
+                </p>
+                {piece.data.tags && piece.data.tags.length > 0 && (
+                  <div class="flex flex-wrap gap-2">
+                    {piece.data.tags.map((tag) => (
+                      <span class="text-xs text-fog bg-slate px-2 py-1 border border-slate">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </a>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+
+  </div>
+</BaseLayout>
