@@ -1,109 +1,228 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Query all content collections
+const dispatches = await getCollection('dispatches');
+const operations = await getCollection('operations');
+const research = await getCollection('research');
+const artifacts = await getCollection('artifacts');
+
+// Sort by date (most recent first) and take limited items
+const recentDispatches = dispatches
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
+
+const recentOperations = operations
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
+
+const recentResearch = research
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+
+const featuredArtifact = artifacts
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+
+// Format date helper
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
+};
 ---
 
-<BaseLayout>
-  <div class="container mx-auto px-4 py-16 md:py-24">
-    <div class="max-w-4xl mx-auto">
-      <!-- Hero Section -->
-      <section class="mb-20">
-        <!-- Terminal-style prefix -->
-        <div class="text-cyan text-sm mb-8 font-mono">
-          <span class="text-fog">$</span> initialize_observation_protocol
-        </div>
+<BaseLayout
+  title="OPOD - Oldhead Penumbral Observatory Directorate"
+  description="Cataloging strange resonances and half-patterns in collective consciousness. Operating at the edges of Now, tracking cultural drift and meaning decay."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
 
-        <!-- Main title with visual hierarchy -->
-        <div class="mb-12 space-y-4">
-          <div class="text-amber text-xs tracking-[0.3em] uppercase font-bold mb-3">
-            [ Classified Observation Network ]
+    <!-- Cryptic Introduction -->
+    <section class="mb-20 sm:mb-24 lg:mb-28">
+      <div class="max-w-4xl">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+          Oldhead Penumbral Observatory Directorate
+        </h1>
+        <p class="text-lg sm:text-xl lg:text-2xl text-cyan mb-6 leading-relaxed">
+          Cataloging strange resonances and half-patterns in collective consciousness.
+        </p>
+        <p class="text-base sm:text-lg text-mist leading-relaxed mb-4">
+          Operating at the edges of Now, tracking cultural drift and meaning decay. We document alternate cultural histories that almost happened or briefly existed—forgotten trends, lost movements, archiving obsolete knowledge, extinct aesthetics, and dead media.
+        </p>
+        <p class="text-base sm:text-lg text-fog leading-relaxed">
+          The patterns are everywhere. You just need to know where to look.
+        </p>
+      </div>
+    </section>
+
+    <!-- Featured Artifact -->
+    {featuredArtifact && (
+      <section class="mb-20 sm:mb-24 lg:mb-28">
+        <div class="max-w-4xl grid md:grid-cols-2 gap-8 lg:gap-12">
+          <div class="bg-void border border-slate p-6 sm:p-8 hover:border-cyan-dim transition-colors">
+            <img
+              src={featuredArtifact.data.image_url}
+              alt={featuredArtifact.data.title}
+              class="w-full h-auto opacity-90 hover:opacity-100 transition-opacity"
+            />
           </div>
-          <h1 class="text-3xl md:text-4xl font-bold leading-tight">
-            <span class="text-ghost">Oldhead</span>
-            <span class="text-mist">Penumbral Observatory</span>
-            <span class="bg-gradient-to-r from-cyan via-purple to-amber bg-clip-text text-transparent">
-              Directorate
-            </span>
-          </h1>
-        </div>
-
-        <!-- Divider -->
-        <div class="flex items-center gap-4 mb-12">
-          <div class="h-px bg-gradient-to-r from-transparent via-cyan to-transparent flex-1"></div>
-          <span class="text-cyan text-xs">◆</span>
-          <div class="h-px bg-gradient-to-r from-transparent via-cyan to-transparent flex-1"></div>
-        </div>
-
-        <!-- Description with enhanced styling -->
-        <div class="pl-6 py-4">
-          <p class="text-base md:text-lg text-fog leading-relaxed">
-            Monitoring strange resonances and meaning decay across the collective unconsciousness.
-          </p>
-        </div>
-        <br />
-        <!-- Status indicator -->
-        <div class="mt-8 flex items-center gap-3 text-sm">
-          <div class="flex items-center gap-2">
-            <div class="w-2 h-2 bg-cyan rounded-full animate-pulse"></div>
-            <span class="text-fog">STATUS:</span>
-            <span class="text-cyan">MONITORING</span>
+          <div class="flex flex-col justify-center">
+            <h3 class="text-xl sm:text-2xl font-bold text-white mb-4">
+              {featuredArtifact.data.title}
+            </h3>
+            <p class="text-sm text-cyan-dim mb-4 uppercase tracking-wider">
+              {featuredArtifact.data.medium} • {formatDate(featuredArtifact.data.date)}
+            </p>
+            <p class="text-base text-mist leading-relaxed mb-6">
+              {featuredArtifact.data.description}
+            </p>
+            <a
+              href="/artifacts"
+              class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
+            >
+              View All Artifacts →
+            </a>
           </div>
         </div>
       </section>
+    )}
 
-      <!-- Section Previews -->
-      <section class="grid md:grid-cols-2 gap-8">
-        <div class="border border-slate p-6 hover:border-cyan transition-colors duration-200">
-          <h2 class="text-2xl font-bold text-cyan mb-3">Temporal Dispatches</h2>
-          <p class="text-fog mb-4">
-            Field reports from the edges of cultural consciousness.
-          </p>
-          <a
-            href="/dispatches"
-            class="text-sm text-mist hover:text-cyan transition-colors duration-200"
-          >
-            View all dispatches &rarr;
-          </a>
-        </div>
+    <!-- Recent Content Feeds -->
+    <section class="space-y-16 sm:space-y-20">
 
-        <div class="border border-slate p-6 hover:border-cyan transition-colors duration-200">
-          <h2 class="text-2xl font-bold text-cyan mb-3">Field Operations</h2>
-          <p class="text-fog mb-4">
-            Active investigations and pattern recognition projects.
-          </p>
-          <a
-            href="/operations"
-            class="text-sm text-mist hover:text-cyan transition-colors duration-200"
-          >
-            View operations &rarr;
-          </a>
+      <!-- Recent Temporal Dispatches -->
+      {recentDispatches.length > 0 && (
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8 border-b border-slate pb-3">
+            Recent Temporal Dispatches
+          </h2>
+          <div class="space-y-6">
+            {recentDispatches.map((dispatch) => (
+              <article class="bg-void border border-slate p-6 hover:border-cyan-dim transition-colors">
+                <a href={`/dispatches/${dispatch.slug}`} class="group">
+                  <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
+                    {dispatch.data.title}
+                  </h3>
+                  <p class="text-sm text-cyan-dim mb-3 uppercase tracking-wider">
+                    {formatDate(dispatch.data.date)}
+                  </p>
+                  <p class="text-base text-mist leading-relaxed">
+                    {dispatch.data.description}
+                  </p>
+                  {dispatch.data.tags && dispatch.data.tags.length > 0 && (
+                    <div class="flex flex-wrap gap-2 mt-4">
+                      {dispatch.data.tags.map((tag) => (
+                        <span class="text-xs text-fog bg-slate px-2 py-1 border border-slate">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </a>
+              </article>
+            ))}
+          </div>
+          <div class="mt-6">
+            <a
+              href="/dispatches"
+              class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
+            >
+              View All Dispatches →
+            </a>
+          </div>
         </div>
+      )}
 
-        <div class="border border-slate p-6 hover:border-cyan transition-colors duration-200">
-          <h2 class="text-2xl font-bold text-cyan mb-3">Research</h2>
-          <p class="text-fog mb-4">
-            Speculative documentation of lost and alternate timelines.
-          </p>
-          <a
-            href="/research"
-            class="text-sm text-mist hover:text-cyan transition-colors duration-200"
-          >
-            Access research archive &rarr;
-          </a>
+      <!-- Recent Field Operations -->
+      {recentOperations.length > 0 && (
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8 border-b border-slate pb-3">
+            Recent Field Operations
+          </h2>
+          <div class="space-y-6">
+            {recentOperations.map((operation) => (
+              <article class="bg-void border border-slate p-6 hover:border-cyan-dim transition-colors">
+                <a href={`/operations/${operation.slug}`} class="group">
+                  <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
+                    {operation.data.title}
+                  </h3>
+                  <p class="text-sm text-cyan-dim mb-3 uppercase tracking-wider">
+                    {formatDate(operation.data.date)}
+                  </p>
+                  <p class="text-base text-mist leading-relaxed">
+                    {operation.data.description}
+                  </p>
+                  {operation.data.tags && operation.data.tags.length > 0 && (
+                    <div class="flex flex-wrap gap-2 mt-4">
+                      {operation.data.tags.map((tag) => (
+                        <span class="text-xs text-fog bg-slate px-2 py-1 border border-slate">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </a>
+              </article>
+            ))}
+          </div>
+          <div class="mt-6">
+            <a
+              href="/operations"
+              class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
+            >
+              View All Operations →
+            </a>
+          </div>
         </div>
+      )}
 
-        <div class="border border-slate p-6 hover:border-cyan transition-colors duration-200">
-          <h2 class="text-2xl font-bold text-cyan mb-3">Artifacts</h2>
-          <p class="text-fog mb-4">
-            Visual evidence of extinct aesthetics and temporal anomalies.
-          </p>
-          <a
-            href="/artifacts"
-            class="text-sm text-mist hover:text-cyan transition-colors duration-200"
-          >
-            Browse artifacts &rarr;
-          </a>
+      <!-- Recent Research -->
+      {recentResearch.length > 0 && (
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8 border-b border-slate pb-3">
+            Recent Research
+          </h2>
+          <div class="space-y-6">
+            {recentResearch.map((piece) => (
+              <article class="bg-void border border-slate p-6 hover:border-cyan-dim transition-colors">
+                <a href={`/research/${piece.slug}`} class="group">
+                  <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
+                    {piece.data.title}
+                  </h3>
+                  <p class="text-sm text-cyan-dim mb-3 uppercase tracking-wider">
+                    {formatDate(piece.data.date)}
+                  </p>
+                  <p class="text-base text-mist leading-relaxed">
+                    {piece.data.description}
+                  </p>
+                  {piece.data.tags && piece.data.tags.length > 0 && (
+                    <div class="flex flex-wrap gap-2 mt-4">
+                      {piece.data.tags.map((tag) => (
+                        <span class="text-xs text-fog bg-slate px-2 py-1 border border-slate">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </a>
+              </article>
+            ))}
+          </div>
+          <div class="mt-6">
+            <a
+              href="/research"
+              class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
+            >
+              View All Research →
+            </a>
+          </div>
         </div>
-      </section>
-    </div>
+      )}
+
+    </section>
+
   </div>
 </BaseLayout>
