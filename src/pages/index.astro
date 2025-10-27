@@ -41,26 +41,20 @@ const formatDate = (date: Date) => {
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
 
     <!-- Cryptic Introduction -->
-    <section class="mb-20 sm:mb-24 lg:mb-28">
+    <section class="mb-16">
       <div class="max-w-4xl">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+        <h1 class="text-3xl sm:text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight">
           Oldhead Penumbral Observatory Directorate
         </h1>
         <p class="text-lg sm:text-xl lg:text-2xl text-cyan mb-6 leading-relaxed">
-          Cataloging strange resonances and half-patterns in collective consciousness.
-        </p>
-        <p class="text-base sm:text-lg text-mist leading-relaxed mb-4">
-          Operating at the edges of Now, tracking cultural drift and meaning decay. We document alternate cultural histories that almost happened or briefly existed—forgotten trends, lost movements, archiving obsolete knowledge, extinct aesthetics, and dead media.
-        </p>
-        <p class="text-base sm:text-lg text-fog leading-relaxed">
-          The patterns are everywhere. You just need to know where to look.
+          Cataloging strange resonances and meaning decay in collective consciousness.
         </p>
       </div>
     </section>
 
     <!-- Featured Artifact -->
     {featuredArtifact && (
-      <section class="mb-20 sm:mb-24 lg:mb-28">
+      <section class="mb-16">
         <div class="max-w-4xl grid md:grid-cols-2 gap-8 lg:gap-12">
           <div class="bg-void border border-slate p-6 sm:p-8 hover:border-cyan-dim transition-colors">
             <img
@@ -95,13 +89,13 @@ const formatDate = (date: Date) => {
 
       <!-- Recent Temporal Dispatches -->
       {recentDispatches.length > 0 && (
-        <div class="mb-20 sm:mb-24 lg:mb-28">
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-10">
+        <div class="mb-16">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8">
             Recent Temporal Dispatches
           </h2>
           <div>
             {recentDispatches.map((dispatch) => (
-              <article class="bg-void border border-slate p-8 mb-8 hover:border-cyan-dim transition-colors">
+              <article class="bg-void border border-slate p-8 mb-6 hover:border-cyan-dim transition-colors">
                 <a href={`/dispatches/${dispatch.slug}`} class="group">
                   <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
                     {dispatch.data.title}
@@ -125,7 +119,7 @@ const formatDate = (date: Date) => {
               </article>
             ))}
           </div>
-          <div class="mt-8">
+          <div class="mt-6">
             <a
               href="/dispatches"
               class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
@@ -138,13 +132,13 @@ const formatDate = (date: Date) => {
 
       <!-- Recent Field Operations -->
       {recentOperations.length > 0 && (
-        <div class="mb-20 sm:mb-24 lg:mb-28">
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-10">
+        <div class="mb-16">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8">
             Recent Field Operations
           </h2>
           <div>
             {recentOperations.map((operation) => (
-              <article class="bg-void border border-slate p-8 mb-8 hover:border-cyan-dim transition-colors">
+              <article class="bg-void border border-slate p-8 mb-6 hover:border-cyan-dim transition-colors">
                 <a href={`/operations/${operation.slug}`} class="group">
                   <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
                     {operation.data.title}
@@ -168,7 +162,7 @@ const formatDate = (date: Date) => {
               </article>
             ))}
           </div>
-          <div class="mt-8">
+          <div class="mt-6">
             <a
               href="/operations"
               class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
@@ -182,12 +176,12 @@ const formatDate = (date: Date) => {
       <!-- Recent Research -->
       {recentResearch.length > 0 && (
         <div>
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-10">
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8">
             Recent Research
           </h2>
           <div>
             {recentResearch.map((piece) => (
-              <article class="bg-void border border-slate p-8 mb-8 hover:border-cyan-dim transition-colors">
+              <article class="bg-void border border-slate p-8 mb-6 hover:border-cyan-dim transition-colors">
                 <a href={`/research/${piece.slug}`} class="group">
                   <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
                     {piece.data.title}
@@ -211,7 +205,7 @@ const formatDate = (date: Date) => {
               </article>
             ))}
           </div>
-          <div class="mt-8">
+          <div class="mt-6">
             <a
               href="/research"
               class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
