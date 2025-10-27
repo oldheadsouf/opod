@@ -3,18 +3,51 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout>
-  <div class="container mx-auto px-4 py-16">
+  <div class="container mx-auto px-4 py-16 md:py-24">
     <div class="max-w-4xl mx-auto">
       <!-- Hero Section -->
-      <section class="mb-16">
-        <h1 class="text-3xl md:text-4xl font-bold text-ghost mb-6">
-          Oldhead Penumbral Observatory Directorate
-        </h1>
+      <section class="mb-20">
+        <!-- Terminal-style prefix -->
+        <div class="text-cyan text-sm mb-8 font-mono">
+          <span class="text-fog">$</span> initialize_observation_protocol
+        </div>
+
+        <!-- Main title with visual hierarchy -->
+        <div class="mb-12 space-y-4">
+          <div class="text-amber text-xs tracking-[0.3em] uppercase font-bold mb-3">
+            [ Classified Observation Network ]
+          </div>
+          <h1 class="text-3xl md:text-4xl font-bold leading-tight">
+            <span class="text-ghost">Oldhead</span>
+            <span class="text-mist">Penumbral Observatory</span>
+            <span class="bg-gradient-to-r from-cyan via-purple to-amber bg-clip-text text-transparent">
+              Directorate
+            </span>
+          </h1>
+        </div>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-4 mb-12">
+          <div class="h-px bg-gradient-to-r from-transparent via-cyan to-transparent flex-1"></div>
+          <span class="text-cyan text-xs">◆</span>
+          <div class="h-px bg-gradient-to-r from-transparent via-cyan to-transparent flex-1"></div>
+        </div>
+
+        <!-- Description with enhanced styling -->
+        <div class="pl-6 py-4">
+          <p class="text-base md:text-lg text-fog leading-relaxed">
+            Monitoring strange resonances and meaning decay across the collective unconsciousness.
+          </p>
+        </div>
         <br />
-        <p class="text-lg text-mist leading-relaxed mb-4">
-          Cataloging strange resonances and half-patterns in collective consciousness.
-        </p>
-        <br />
+        <!-- Status indicator -->
+        <div class="mt-8 flex items-center gap-3 text-sm">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-cyan rounded-full animate-pulse"></div>
+            <span class="text-fog">STATUS:</span>
+            <span class="text-cyan">MONITORING</span>
+          </div>
+        </div>
       </section>
 
       <!-- Section Previews -->
