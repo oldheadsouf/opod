@@ -1,1 +1,45 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+@theme {
+  /* Font Families */
+  --font-sans: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Custom Color Palette */
+  --color-obsidian: #000000;
+  --color-void: #0a0a0a;
+  --color-slate: #1a1a1a;
+  --color-fog: #a0a0a0;
+  --color-mist: #d0d0d0;
+  --color-ghost: #e5e5e5;
+  --color-white: #ffffff;
+
+  /* Accent Colors */
+  --color-cyan-dim: #4a9d9c;
+  --color-cyan: #5fd3bc;
+  --color-cyan-bright: #7ee8d5;
+
+  --color-amber-dim: #d4a574;
+  --color-amber: #f2b774;
+  --color-amber-bright: #ffd89b;
+
+  --color-purple-dim: #8b7ba8;
+  --color-purple: #a991d4;
+  --color-purple-bright: #c5b3e6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000000;
+  color: #e5e5e5;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

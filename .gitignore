@@ -23,5 +23,13 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# VS Code
+.vscode/
+*.code-workspace
+
+# Temporary files
+*.tmp
+*.temp
+
 .claude/
 CLAUDE.md
