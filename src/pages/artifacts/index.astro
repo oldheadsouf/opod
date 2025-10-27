@@ -1,0 +1,264 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Query all artifacts
+const artifacts = await getCollection('artifacts');
+
+// Sort by date (most recent first)
+const sortedArtifacts = artifacts
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Format date helper
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
+};
+---
+
+<BaseLayout
+  title="Artifacts - OPOD"
+  description="Visual archaeology of the command line. Digital collages, extinct aesthetics, and dead media preserved."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+
+    <!-- Page Header -->
+    <header class="mb-12 sm:mb-16">
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+        Artifacts
+      </h1>
+      <p class="text-base sm:text-lg text-mist max-w-3xl">
+        Visual archaeology of the command line. Digital collages, extinct aesthetics, and dead media preserved.
+      </p>
+    </header>
+
+    <!-- Artifacts Grid -->
+    <section>
+      {sortedArtifacts.length === 0 ? (
+        <div class="bg-void border border-slate p-8">
+          <p class="text-mist">No artifacts available at this time.</p>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
+          {sortedArtifacts.map((artifact, index) => (
+            <div
+              class="relative border border-slate hover:border-cyan-dim transition-colors group cursor-pointer bg-void"
+              style="width: 100%; height: 400px;"
+              data-artifact-index={index}
+            >
+              <img
+                src={artifact.data.image_url}
+                alt={artifact.data.title}
+                style="width: 100%; height: 100%; object-fit: cover; display: block; position: relative; z-index: 1;"
+                class="transition-transform duration-300 group-hover:scale-105"
+              />
+
+              <!-- Hover Overlay -->
+              <div class="absolute inset-0 transition-all duration-300 flex items-center justify-center p-4" style="z-index: 10; background-color: rgba(0, 0, 0, 0); pointer-events: none;">
+                <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center pointer-events-auto" style="position: relative; z-index: 11;">
+                  <h2 class="text-lg sm:text-xl font-bold text-white mb-2">
+                    {artifact.data.title}
+                  </h2>
+                  <p class="text-sm text-cyan-dim uppercase tracking-wider">
+                    {artifact.data.medium}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div
+    id="lightbox-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-obsidian bg-opacity-95"
+    aria-hidden="true"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-void border border-slate">
+
+      <!-- Close Button -->
+      <button
+        id="lightbox-close"
+        class="absolute top-4 right-4 z-10 text-mist hover:text-white transition-colors text-2xl w-10 h-10 flex items-center justify-center bg-obsidian border border-slate hover:border-cyan-dim"
+        aria-label="Close lightbox"
+      >
+        ×
+      </button>
+
+      <!-- Lightbox Content -->
+      <div id="lightbox-content" class="p-6 sm:p-8 lg:p-12">
+        <!-- Content will be dynamically inserted here -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Client-side JavaScript for Lightbox -->
+  <script define:vars={{ artifacts: sortedArtifacts, formatDate }}>
+    // Convert artifacts data to plain objects for client-side use
+    const artifactsData = artifacts.map(artifact => ({
+      title: artifact.data.title,
+      date: artifact.data.date,
+      description: artifact.data.description,
+      medium: artifact.data.medium,
+      image_url: artifact.data.image_url,
+      external_url: artifact.data.external_url,
+      youtube_id: artifact.data.youtube_id,
+      tags: artifact.data.tags,
+      body: artifact.body
+    }));
+
+    const modal = document.getElementById('lightbox-modal');
+    const modalContent = document.getElementById('lightbox-content');
+    const closeButton = document.getElementById('lightbox-close');
+    const artifactElements = document.querySelectorAll('[data-artifact-index]');
+
+    // Format date on client side
+    const formatDateClient = (dateStr) => {
+      const date = new Date(dateStr);
+      return new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(date);
+    };
+
+    // Open lightbox with artifact data
+    const openLightbox = (index) => {
+      const artifact = artifactsData[index];
+
+      // Build lightbox HTML
+      let html = `
+        <div class="grid lg:grid-cols-2 gap-8">
+          <!-- Image Section -->
+          <div class="flex items-start justify-center">
+            <img
+              src="${artifact.image_url}"
+              alt="${artifact.title}"
+              class="w-full h-auto max-h-[60vh] object-contain border border-slate"
+            />
+          </div>
+
+          <!-- Info Section -->
+          <div class="space-y-6">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">
+                ${artifact.title}
+              </h2>
+              <p class="text-sm text-cyan-dim uppercase tracking-wider mb-1">
+                ${artifact.medium}
+              </p>
+              <p class="text-sm text-fog">
+                ${formatDateClient(artifact.date)}
+              </p>
+            </div>
+
+            <div class="prose prose-sm sm:prose-base">
+              <p class="text-mist leading-relaxed">
+                ${artifact.description}
+              </p>
+            </div>
+      `;
+
+      // Add tags if they exist
+      if (artifact.tags && artifact.tags.length > 0) {
+        html += `
+            <div class="flex flex-wrap gap-2">
+              ${artifact.tags.map(tag => `
+                <span class="text-xs text-fog bg-slate px-2 py-1 border border-slate">
+                  ${tag}
+                </span>
+              `).join('')}
+            </div>
+        `;
+      }
+
+      // Add external link button if it exists
+      if (artifact.external_url) {
+        html += `
+            <div>
+              <a
+                href="${artifact.external_url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-block bg-cyan text-obsidian px-6 py-3 font-bold uppercase tracking-wider text-sm hover:bg-cyan-bright transition-colors border border-cyan"
+              >
+                View External Link →
+              </a>
+            </div>
+        `;
+      }
+
+      // Add YouTube embed if youtube_id exists
+      if (artifact.youtube_id) {
+        html += `
+            <div class="aspect-video">
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/${artifact.youtube_id}"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                class="border border-slate"
+              ></iframe>
+            </div>
+        `;
+      }
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      modalContent.innerHTML = html;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    };
+
+    // Close lightbox
+    const closeLightbox = () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = ''; // Restore scrolling
+    };
+
+    // Event listeners
+    artifactElements.forEach((element) => {
+      element.addEventListener('click', () => {
+        const index = parseInt(element.getAttribute('data-artifact-index'));
+        openLightbox(index);
+      });
+    });
+
+    closeButton.addEventListener('click', closeLightbox);
+
+    // Close on ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeLightbox();
+      }
+    });
+
+    // Close when clicking outside the content
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeLightbox();
+      }
+    });
+  </script>
+
+</BaseLayout>
