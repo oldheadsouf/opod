@@ -1,0 +1,112 @@
+---
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Temporal Dispatches', href: '/dispatches' },
+  { label: 'Field Operations', href: '/operations' },
+  { label: 'Research', href: '/research' },
+  { label: 'Artifacts', href: '/artifacts' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="border-b border-slate sticky top-0 bg-obsidian z-50">
+  <nav class="container mx-auto px-4 py-4" aria-label="Main navigation">
+    <div class="flex items-center justify-between">
+      <!-- Logo/Wordmark -->
+      <a
+        href="/"
+        class="text-xl font-bold text-ghost hover:text-cyan transition-colors duration-200"
+        aria-label="OPOD Home"
+      >
+        OPOD
+      </a>
+
+      <!-- Desktop Navigation -->
+      <ul class="hidden md:flex items-center space-x-6">
+        {navItems.map(({ label, href }) => {
+          const isActive = currentPath === href || (href !== '/' && currentPath.startsWith(href));
+          return (
+            <li>
+              <a
+                href={href}
+                class={`text-sm hover:text-cyan transition-colors duration-200 ${
+                  isActive ? 'text-cyan' : 'text-mist'
+                }`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-button"
+        class="md:hidden text-ghost hover:text-cyan transition-colors duration-200"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Toggle navigation menu"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div
+      id="mobile-menu"
+      class="hidden md:hidden mt-4 pb-4 border-t border-slate pt-4"
+      role="menu"
+    >
+      <ul class="space-y-3">
+        {navItems.map(({ label, href }) => {
+          const isActive = currentPath === href || (href !== '/' && currentPath.startsWith(href));
+          return (
+            <li role="none">
+              <a
+                href={href}
+                class={`block text-sm hover:text-cyan transition-colors duration-200 ${
+                  isActive ? 'text-cyan' : 'text-mist'
+                }`}
+                role="menuitem"
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener('click', () => {
+      const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+
+      mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+</script>

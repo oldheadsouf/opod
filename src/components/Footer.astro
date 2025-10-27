@@ -1,0 +1,24 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-slate mt-auto">
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-fog">
+      <!-- Contact Info -->
+      <div class="flex flex-col md:flex-row gap-4 items-center">
+        <a
+          href="mailto:contact@opod.example"
+          class="hover:text-cyan transition-colors duration-200"
+        >
+          contact@opod.example
+        </a>
+      </div>
+
+      <!-- Copyright -->
+      <div class="text-center md:text-right">
+        <p>&copy; {currentYear} OPOD. All patterns observed.</p>
+      </div>
+    </div>
+  </div>
+</footer>
