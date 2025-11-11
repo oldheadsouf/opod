@@ -11,15 +11,15 @@ const artifacts = await getCollection('artifacts');
 // Sort by date (most recent first) and take limited items
 const recentDispatches = dispatches
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 2);
+  .slice(0, 3);
 
 const recentOperations = operations
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 2);
+  .slice(0, 4);
 
 const recentResearch = research
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 5);
+  .slice(0, 4);
 
 const featuredArtifact = artifacts
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
@@ -38,185 +38,141 @@ const formatDate = (date: Date) => {
   title="OPOD - Oldhead Penumbral Observatory Directorate"
   description="Cataloging strange resonances and half-patterns in collective consciousness. Operating at the edges of Now, tracking cultural drift and meaning decay."
 >
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-    <!-- Cryptic Introduction -->
-    <section class="mb-16">
-      <div class="max-w-4xl">
-        <h1 class="text-3xl sm:text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight">
-          Oldhead Penumbral Observatory Directorate
-        </h1>
-        <p class="text-lg sm:text-xl lg:text-2xl text-cyan mb-6 leading-relaxed">
-          Cataloging strange resonances and meaning decay in collective consciousness.
-        </p>
+    <!-- Minimal Cryptic Introduction -->
+    <section class="mb-6">
+      <p class="text-sm text-cyan-dim">
+        Cataloging strange resonances and meaning decay in collective consciousness.
+      </p>
+    </section>
+
+    <!-- Two-Column Layout: Featured Artifact + Recent Dispatches -->
+    <section class="mb-12">
+      <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+
+        <!-- Left Column: Featured Artifact (~50%) -->
+        {featuredArtifact && (
+          <div class="space-y-3">
+            <h2 class="text-lg font-bold text-white uppercase tracking-wider">Featured Artifact</h2>
+            <div>
+              <a href="/artifacts">
+                <img
+                  src={featuredArtifact.data.image_url}
+                  alt={featuredArtifact.data.title}
+                  class="w-full h-auto opacity-90 hover:opacity-100 transition-opacity"
+                />
+              </a>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white mb-2">
+                {featuredArtifact.data.title}
+              </h3>
+              <p class="text-xs text-cyan-dim mb-2 uppercase tracking-wider">
+                {featuredArtifact.data.medium} • {formatDate(featuredArtifact.data.date)}
+              </p>
+              <p class="text-sm text-mist leading-relaxed">
+                {featuredArtifact.data.description}
+              </p>
+            </div>
+          </div>
+        )}
+
+        <!-- Right Column: Recent Temporal Dispatches Headlines -->
+        {recentDispatches.length > 0 && (
+          <div class="space-y-3">
+            <h2 class="text-lg font-bold text-white uppercase tracking-wider">Recent Temporal Dispatches</h2>
+            <div class="space-y-3">
+              {recentDispatches.map((dispatch) => (
+                <article class="bg-void border border-slate p-4 hover:border-cyan-dim transition-colors">
+                  <a href={`/dispatches/${dispatch.slug}`} class="group block">
+                    <h3 class="text-base font-bold text-white mb-2 group-hover:text-cyan transition-colors">
+                      {dispatch.data.title}
+                    </h3>
+                    <p class="text-xs text-cyan-dim uppercase tracking-wider">
+                      {formatDate(dispatch.data.date)}
+                    </p>
+                  </a>
+                </article>
+              ))}
+            </div>
+            <div class="pt-2">
+              <a
+                href="/dispatches"
+                class="text-sm text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
+              >
+                View All Dispatches →
+              </a>
+            </div>
+          </div>
+        )}
+
       </div>
     </section>
 
-    <!-- Featured Artifact -->
-    {featuredArtifact && (
-      <section class="mb-16">
-        <div class="max-w-4xl grid md:grid-cols-2 gap-8 lg:gap-12">
-          <div class="bg-void border border-slate p-6 sm:p-8 hover:border-cyan-dim transition-colors">
-            <img
-              src={featuredArtifact.data.image_url}
-              alt={featuredArtifact.data.title}
-              class="w-full h-auto opacity-90 hover:opacity-100 transition-opacity"
-            />
-          </div>
-          <div class="flex flex-col justify-center">
-            <h3 class="text-xl sm:text-2xl font-bold text-white mb-4">
-              {featuredArtifact.data.title}
-            </h3>
-            <p class="text-sm text-cyan-dim mb-4 uppercase tracking-wider">
-              {featuredArtifact.data.medium} • {formatDate(featuredArtifact.data.date)}
-            </p>
-            <p class="text-base text-mist leading-relaxed mb-6">
-              {featuredArtifact.data.description}
-            </p>
-            <a
-              href="/artifacts"
-              class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
-            >
-              View All Artifacts →
-            </a>
-          </div>
+    <!-- Below the Fold: Recent Field Operations -->
+    {recentOperations.length > 0 && (
+      <section class="mb-12">
+        <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-4">Recent Field Operations</h2>
+        <div class="space-y-3">
+          {recentOperations.map((operation) => (
+            <article class="bg-void border border-slate p-4 hover:border-cyan-dim transition-colors">
+              <a href={`/operations/${operation.slug}`} class="group block">
+                <h3 class="text-base font-bold text-white mb-2 group-hover:text-cyan transition-colors">
+                  {operation.data.title}
+                </h3>
+                <p class="text-xs text-cyan-dim mb-2 uppercase tracking-wider">
+                  {formatDate(operation.data.date)}
+                </p>
+                <p class="text-sm text-mist leading-relaxed">
+                  {operation.data.description}
+                </p>
+              </a>
+            </article>
+          ))}
+        </div>
+        <div class="mt-4">
+          <a
+            href="/operations"
+            class="text-sm text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
+          >
+            View All Operations →
+          </a>
         </div>
       </section>
     )}
 
-    <!-- Recent Content Feeds -->
-    <section>
-
-      <!-- Recent Temporal Dispatches -->
-      {recentDispatches.length > 0 && (
-        <div class="mb-16">
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8">
-            Recent Temporal Dispatches
-          </h2>
-          <div>
-            {recentDispatches.map((dispatch) => (
-              <article class="bg-void border border-slate p-8 mb-6 hover:border-cyan-dim transition-colors">
-                <a href={`/dispatches/${dispatch.slug}`} class="group">
-                  <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
-                    {dispatch.data.title}
-                  </h3>
-                  <p class="text-sm text-cyan-dim mb-3 uppercase tracking-wider">
-                    {formatDate(dispatch.data.date)}
-                  </p>
-                  <p class="text-base text-mist leading-relaxed">
-                    {dispatch.data.description}
-                  </p>
-                  {dispatch.data.tags && dispatch.data.tags.length > 0 && (
-                    <div class="flex flex-wrap gap-2 mt-4">
-                      {dispatch.data.tags.map((tag) => (
-                        <span class="text-xs text-fog bg-slate px-2 py-1 border border-slate">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </a>
-              </article>
-            ))}
-          </div>
-          <div class="mt-6">
-            <a
-              href="/dispatches"
-              class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
-            >
-              View All Dispatches →
-            </a>
-          </div>
+    <!-- Below the Fold: Recent Research -->
+    {recentResearch.length > 0 && (
+      <section class="mb-12">
+        <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-4">Recent Research</h2>
+        <div class="space-y-3">
+          {recentResearch.map((piece) => (
+            <article class="bg-void border border-slate p-4 hover:border-cyan-dim transition-colors">
+              <a href={`/research/${piece.slug}`} class="group block">
+                <h3 class="text-base font-bold text-white mb-2 group-hover:text-cyan transition-colors">
+                  {piece.data.title}
+                </h3>
+                <p class="text-xs text-cyan-dim mb-2 uppercase tracking-wider">
+                  {formatDate(piece.data.date)}
+                </p>
+                <p class="text-sm text-mist leading-relaxed">
+                  {piece.data.description}
+                </p>
+              </a>
+            </article>
+          ))}
         </div>
-      )}
-
-      <!-- Recent Field Operations -->
-      {recentOperations.length > 0 && (
-        <div class="mb-16">
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8">
-            Recent Field Operations
-          </h2>
-          <div>
-            {recentOperations.map((operation) => (
-              <article class="bg-void border border-slate p-8 mb-6 hover:border-cyan-dim transition-colors">
-                <a href={`/operations/${operation.slug}`} class="group">
-                  <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
-                    {operation.data.title}
-                  </h3>
-                  <p class="text-sm text-cyan-dim mb-3 uppercase tracking-wider">
-                    {formatDate(operation.data.date)}
-                  </p>
-                  <p class="text-base text-mist leading-relaxed">
-                    {operation.data.description}
-                  </p>
-                  {operation.data.tags && operation.data.tags.length > 0 && (
-                    <div class="flex flex-wrap gap-2 mt-4">
-                      {operation.data.tags.map((tag) => (
-                        <span class="text-xs text-fog bg-slate px-2 py-1 border border-slate">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </a>
-              </article>
-            ))}
-          </div>
-          <div class="mt-6">
-            <a
-              href="/operations"
-              class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
-            >
-              View All Operations →
-            </a>
-          </div>
+        <div class="mt-4">
+          <a
+            href="/research"
+            class="text-sm text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
+          >
+            View All Research →
+          </a>
         </div>
-      )}
-
-      <!-- Recent Research -->
-      {recentResearch.length > 0 && (
-        <div>
-          <h2 class="text-2xl sm:text-3xl font-bold text-white mb-8">
-            Recent Research
-          </h2>
-          <div>
-            {recentResearch.map((piece) => (
-              <article class="bg-void border border-slate p-8 mb-6 hover:border-cyan-dim transition-colors">
-                <a href={`/research/${piece.slug}`} class="group">
-                  <h3 class="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-cyan transition-colors">
-                    {piece.data.title}
-                  </h3>
-                  <p class="text-sm text-cyan-dim mb-3 uppercase tracking-wider">
-                    {formatDate(piece.data.date)}
-                  </p>
-                  <p class="text-base text-mist leading-relaxed">
-                    {piece.data.description}
-                  </p>
-                  {piece.data.tags && piece.data.tags.length > 0 && (
-                    <div class="flex flex-wrap gap-2 mt-4">
-                      {piece.data.tags.map((tag) => (
-                        <span class="text-xs text-fog bg-slate px-2 py-1 border border-slate">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </a>
-              </article>
-            ))}
-          </div>
-          <div class="mt-6">
-            <a
-              href="/research"
-              class="text-cyan hover:text-cyan-bright transition-colors inline-flex items-center gap-2"
-            >
-              View All Research →
-            </a>
-          </div>
-        </div>
-      )}
-
-    </section>
+      </section>
+    )}
 
   </div>
 </BaseLayout>
